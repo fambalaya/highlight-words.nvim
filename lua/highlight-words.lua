@@ -8,7 +8,7 @@ local default_opts = {
 local cmd_mode = { "n", "i", "v" }
 local cur_opts
 
-local function toggle() vim.print("toggle") end
+local function toggle() vim.print("toggle 123123") end
 
 local function clear() vim.print("clear") end
 
