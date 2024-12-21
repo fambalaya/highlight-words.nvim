@@ -2,7 +2,6 @@ local config = require("highlight-words.config")
 local api = vim.api
 local fn = vim.fn
 
-local M = {}
 local g = {
     enabled = false, ---@type boolean
     bufs = {}, ---@type table<string, true>
@@ -147,9 +146,7 @@ end
 
 local function toggle()
     local word, err = get_word()
-    if not word then
-        return vim.notify(err, vim.log.levels.INFO)
-    end
+    if not word then return vim.notify(err, vim.log.levels.INFO) end
     if g.words[word] then
         highlight_off(word)
     else
@@ -161,12 +158,6 @@ local function clear()
     each_win(fn.clearmatches)
     g.words = {}
     g.next_color_id = 1
-end
-
-local function install_cmd()
-    local new_cmd = api.nvim_create_user_command
-    new_cmd("HighlightToggle", toggle, {})
-    new_cmd("HighlightClear", clear, {})
 end
 
 local function on_new_buf(buf)
@@ -197,6 +188,12 @@ local function create_hl_groups()
 end
 
 local function on_colorscheme() create_hl_groups() end
+
+local function install_cmd()
+    local new_cmd = api.nvim_create_user_command
+    new_cmd("HighlightToggle", toggle, {})
+    new_cmd("HighlightClear", clear, {})
+end
 
 local function install_autocmd()
     local group = api.nvim_create_augroup("highlight-words.nvim", {})
